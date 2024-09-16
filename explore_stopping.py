@@ -17,7 +17,6 @@ for experiment in range(1000):
     for i in range(1, len_candidates):
         for candidate in candidates[i:-1]:
             if candidate > max(candidates[0:i]):
-                solution_found_count[str(i)] += 1
                 if candidate == optimal_candidate:
                     optimal_solution_found_count[str(i)] += 1
                 

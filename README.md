@@ -2,6 +2,7 @@
 
 ## Team Members
 Michael Grajera
+Benson Shafer
 
 ## Required Packages
 
@@ -14,4 +15,21 @@ pip install matplotlib
 * numpy
 ```bash
 pip install numpy
+```
+
+## Running the File
+
+In the shell run
+```bash
+py HW1_Shafer_Benson.py {args}
+```
+
+These are the different arguments and their output
+
+```bash
+py HW1_Shafer_Benson.py 1
+```
+
+```bash
+py HW1_Shafer_Benson.py 2
 ```
