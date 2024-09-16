@@ -27,9 +27,11 @@ py HW1_Shafer_Benson.py {args}
 These are the different arguments and their output
 
 ```bash
-py HW1_Shafer_Benson.py 1
+py HW1_Shafer_Benson.py 1 true
 ```
+Graph for part 1 (Omit true to run 10 iterations of the experiment and find the average)
 
 ```bash
 py HW1_Shafer_Benson.py 2
 ```
+Graphs for part 2
