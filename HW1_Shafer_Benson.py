@@ -33,12 +33,11 @@ def normal_distribution():
 def beta_distribution():
     return min(99, max(1, int(np.random.beta(2, 7) * 99)))
 
+# Functions for finding general optimum stopping point
 def general_optimum(graph):
     len_candidates = 100
-    solution_found_count = {}
     optimal_solution_found_count = {}
     for i in range(1, len_candidates):
-        solution_found_count[str(i)] = 0
         optimal_solution_found_count[str(i)] = 0
     
     for experiment in range(1000):
@@ -46,6 +45,7 @@ def general_optimum(graph):
         optimal_candidate = max(candidates)
 
         for i in range(1, len_candidates):
+            # Loop through candidates from i until the end of the list
             for candidate in candidates[i:-1]:
                 if candidate > max(candidates[0:i]):
                     if candidate == optimal_candidate:
@@ -130,6 +130,58 @@ def exploring_alternative_distribution():
     plt.tight_layout()
     plt.show()
 
+# Function to simulate rewards for a given stopping threshold and distribution
+def simulate_rewards(distribution, threshold, max_evaluations, num_simulations):
+    rewards = []
+    for _ in range(num_simulations):
+        evaluations = 0
+        best_value = -np.inf
+        for i in range(max_evaluations):
+            # Get the next value from the distribution
+            if distribution == "uniform":
+                value = uniform_distribution()
+            elif distribution == "normal":
+                value = normal_distribution()
+            else:
+                raise ValueError("Invalid distribution type")
+
+            evaluations += 1
+            # If the value exceeds the threshold, select it and stop
+            if value > threshold:
+                best_value = value
+                break
+
+        # Calculate the reward
+        reward = best_value - evaluations
+        rewards.append(reward)
+
+    return np.mean(rewards)
+
+def maximizing_benefits_helper():
+    # Simulation parameters
+    num_simulations = 10000  # Number of simulations to run
+    max_evaluations = 100  # Maximum number of evaluations
+
+    # Simulate the optimal stopping threshold for uniform and normal distributions
+    thresholds = range(1, 100)
+    uniform_rewards = []
+    normal_rewards = []
+
+    for threshold in thresholds:
+        uniform_rewards.append(simulate_rewards("uniform", threshold, max_evaluations, num_simulations))
+        normal_rewards.append(simulate_rewards("normal", threshold, max_evaluations, num_simulations))
+
+    # Plot the results
+    plt.figure(figsize=(10, 6))
+    plt.plot(thresholds, uniform_rewards, label="Uniform Distribution", color="blue")
+    plt.plot(thresholds, normal_rewards, label="Normal Distribution", color="red")
+    plt.xlabel("Stopping Threshold")
+    plt.ylabel("Average Reward")
+    plt.title("Average Reward vs Stopping Threshold")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 
 def main():
     experiment_count = 10
@@ -138,6 +190,7 @@ def main():
             if len(sys.argv) > 2 and sys.argv[2].lower() == "true":
                 general_optimum(True)
             else:
+                # Runs {experiemnt_count} iterations getting the average stop percentage
                 percentage_count = []
                 for i in range(experiment_count):
                     percentage_count.append(general_optimum(False))
@@ -147,10 +200,10 @@ def main():
 
         if sys.argv[1] == "2":
             exploring_alternative_distribution()
+        if sys.argv[1] == "3":
+            maximizing_benefits_helper()
     else:
-        print("Input either a 1, 2, 3 as the argument for the different test results")
-
-
+        print("Input either a 1, 2, 3 as the argument for the different test results. Having the argument true after 1 generates a graph")
 
 if __name__ == '__main__':
     main()
